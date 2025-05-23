@@ -38,4 +38,26 @@ pipeline {
       }
     }
   }
+
+  post {
+    // always = on success, failure, or abortion
+    always {
+      // Basic email-ext notification
+      emailext(
+        recipientProviders: [[$class: 'DevelopersRecipientProvider']], // optional: auto-mail to committers
+        to: 'team@example.com',                                     // your recipients
+        subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+        body: """\
+          <p><b>Job:</b> ${env.JOB_NAME} #${env.BUILD_NUMBER}</p>
+          <p><b>Status:</b> ${currentBuild.currentResult}</p>
+          <p>See the <a href='${env.BUILD_URL}'>build details</a> for more.</p>
+        """,
+        attachLog: true,
+        mimeType: 'text/html',
+        // Reference the SMTP credentials you set up in Manage Jenkins → Credentials
+        from: 'your-account@gmail.com',
+        credentialsId: 'gmail-smtp'
+      )
+    }
+  }
 }
