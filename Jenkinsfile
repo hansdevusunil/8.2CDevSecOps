@@ -15,7 +15,6 @@ pipeline {
 
     stage('Install Dependencies') {
       steps {
-        // Use 'bat' on Windows
         bat 'npm install'
       }
     }
@@ -40,23 +39,20 @@ pipeline {
   }
 
   post {
-    // always = on success, failure, or abortion
     always {
-      // Basic email-ext notification
+      // Uses the Email-Extension plugin; will pull the SMTP server, port,
+      // credentials and TLS/SSL settings from your global Jenkins config.
       emailext(
-        recipientProviders: [[$class: 'DevelopersRecipientProvider']], // optional: auto-mail to committers
-        to: 'hansdevsunil111@gmail.com.com',                                     // your recipients
+        to: 'hansdevsunil111@gmail.com',                              // your recipients
+        from: 'hansdevsunil111@gmail.com',                      // must match your SMTP creds
         subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
         body: """\
           <p><b>Job:</b> ${env.JOB_NAME} #${env.BUILD_NUMBER}</p>
           <p><b>Status:</b> ${currentBuild.currentResult}</p>
-          <p>See the <a href='${env.BUILD_URL}'>build details</a> for more.</p>
+          <p>See the <a href='${env.BUILD_URL}'>build details</a>.</p>
         """,
         attachLog: true,
-        mimeType: 'text/html',
-        // Reference the SMTP credentials you set up in Manage Jenkins → Credentials
-        from: 'hansdevsunil111@gmail.com.com',
-        credentialsId: 'gmail-smtp'
+        mimeType: 'text/html'
       )
     }
   }
