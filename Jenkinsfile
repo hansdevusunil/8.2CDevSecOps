@@ -45,7 +45,7 @@ pipeline {
       // Basic email-ext notification
       emailext(
         recipientProviders: [[$class: 'DevelopersRecipientProvider']], // optional: auto-mail to committers
-        to: 'team@example.com',                                     // your recipients
+        to: 'hansdevsunil111@gmail.com.com',                                     // your recipients
         subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
         body: """\
           <p><b>Job:</b> ${env.JOB_NAME} #${env.BUILD_NUMBER}</p>
@@ -55,7 +55,7 @@ pipeline {
         attachLog: true,
         mimeType: 'text/html',
         // Reference the SMTP credentials you set up in Manage Jenkins → Credentials
-        from: 'your-account@gmail.com',
+        from: 'hansdevsunil111@gmail.com.com',
         credentialsId: 'gmail-smtp'
       )
     }
